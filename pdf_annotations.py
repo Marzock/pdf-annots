@@ -213,6 +213,21 @@ def md_cell(text: str, limit: int = 0) -> str:
     return text
 
 
+def result_cell(quote: str, note: str, limit: int = 0) -> str:
+    """Quoted text and your own comment in one cell.
+
+    The comment is set in italics, so it stays distinguishable from the text
+    taken out of the PDF.
+    """
+    quote = md_cell(quote, limit)
+    note = md_cell(note, limit)
+    if note:
+        note = "*" + note + "*"
+    if quote and note:
+        return quote + " — " + note
+    return quote or note
+
+
 def area(rect) -> float:
     """Area of a rect - PyMuPDF has no stable API for this."""
     return max(0.0, rect.x1 - rect.x0) * max(0.0, rect.y1 - rect.y0)
@@ -362,7 +377,7 @@ def extract(pdf: Path) -> list:
 def render(title: str, annots: list, with_author: bool, limit: int = 0,
            with_path: bool = False, base: "Path | None" = None) -> str:
     annots = sorted(annots, key=lambda a: (str(a.pdf).lower(), a.page, a.sort_y, a.sort_x))
-    header = ["Source", "Page", "Section", "Type", "Color", "Highlight", "Note"]
+    header = ["Source", "Page", "Section", "Type", "Color", "Result"]
     if with_author:
         header += ["Author", "Date"]
 
@@ -383,8 +398,7 @@ def render(title: str, annots: list, with_author: bool, limit: int = 0,
             md_cell(a.section) or "-",
             a.kind,
             a.color or "-",
-            md_cell(a.quote, limit) or "-",
-            md_cell(a.note, limit) or "-",
+            result_cell(a.quote, a.note, limit) or "-",
         ]
         if with_author:
             row += [md_cell(a.author) or "-", a.date or "-"]

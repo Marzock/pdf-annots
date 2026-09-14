@@ -57,18 +57,21 @@ Each directory gets a file like this one:
 
 2 annotations from 1 PDF file.
 
-| Source     | Page | Section       | Type      | Color  | Highlight              | Note             |
-| ---------- | ---- | ------------- | --------- | ------ | ---------------------- | ---------------- |
-| smith-2024 | 4    | 2 Methodology | highlight | yellow | we sampled 40 subjects | sample is small  |
-| smith-2024 | 9    | 5 Discussion  | note      | blue   | -                      | cf. Meyer 2019   |
+| Source     | Page | Section       | Type      | Color  | Result                                     |
+| ---------- | ---- | ------------- | --------- | ------ | ------------------------------------------ |
+| smith-2024 | 4    | 2 Methodology | highlight | yellow | we sampled 40 subjects — *sample is small* |
+| smith-2024 | 9    | 5 Discussion  | note      | blue   | *cf. Meyer 2019*                           |
 ```
 
 ### Columns
 
 `Source` (the PDF name, with a relative path in the collected file) · `Page` ·
-`Section` · `Type` · `Color` · `Highlight` (the highlighted original text) ·
-`Note` (your comment). `--with-author-date` adds `Author` and `Date`. Empty
-fields show up as `-`.
+`Section` · `Type` · `Color` · `Result`. `--with-author-date` adds `Author` and
+`Date`. Empty fields show up as `-`.
+
+`Result` holds the highlighted original text and your own comment in one cell:
+the comment is set in *italics* and, where there is both, follows the quoted
+text after an em dash. `--max-cell` applies to each of the two parts.
 
 `Section` comes from the PDF's table of contents: the last outline entry above
 the annotation. Without a table of contents it stays `-`.
